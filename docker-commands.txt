@@ -1,0 +1,164 @@
+# أوامر Docker المفيدة لتطبيق ذكي
+
+## أوامر تشغيل التطبيق على VPS
+
+### الطريقة 1: مباشرة من Docker Hub
+
+```bash
+# سحب الصورة
+docker pull faisalanqoudi/dhaki:latest
+
+# تشغيل التطبيق
+docker run -d -p 3000:3000 --name dhaki-app --restart unless-stopped faisalanqoudi/dhaki:latest
+
+# مراقبة السجلات
+docker logs -f dhaki-app
+```
+
+### الطريقة 2: باستخدام Docker Compose
+
+إنشاء ملف `docker-compose.yml`:
+
+```yaml
+version: '3'
+
+services:
+  dhaki:
+    image: faisalanqoudi/dhaki:latest
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+```
+
+ثم تشغيل التطبيق:
+
+```bash
+docker-compose up -d
+```
+
+## أوامر صيانة وإدارة الحاوية
+
+### عرض الحاويات النشطة
+```bash
+docker ps
+```
+
+### عرض سجلات التطبيق
+```bash
+docker logs dhaki-app
+```
+
+### متابعة السجلات في الوقت الحقيقي
+```bash
+docker logs -f dhaki-app
+```
+
+### إعادة تشغيل التطبيق
+```bash
+docker restart dhaki-app
+```
+
+### إيقاف التطبيق
+```bash
+docker stop dhaki-app
+```
+
+### حذف الحاوية
+```bash
+docker rm dhaki-app
+```
+
+### تحديث التطبيق لإصدار جديد
+```bash
+# سحب أحدث إصدار
+docker pull faisalanqoudi/dhaki:latest
+
+# إيقاف وحذف الحاوية القديمة
+docker stop dhaki-app
+docker rm dhaki-app
+
+# تشغيل الحاوية الجديدة
+docker run -d -p 3000:3000 --name dhaki-app --restart unless-stopped faisalanqoudi/dhaki:latest
+```
+
+## استكشاف المشكلات وإصلاحها
+
+### فحص موارد النظام
+```bash
+docker stats
+```
+
+### الدخول إلى الحاوية للتصحيح
+```bash
+docker exec -it dhaki-app /bin/sh
+```
+
+### التحقق من شبكة الحاوية
+```bash
+docker network inspect bridge
+```
+
+### عرض تفاصيل الحاوية
+```bash
+docker inspect dhaki-app
+```
+
+### تنظيف الصور والحاويات غير المستخدمة
+```bash
+docker system prune -a
+```
+
+## سحب الصورة من Docker Hub
+docker pull faisalanqoudi/dhaki:latest
+
+## تشغيل التطبيق (الطريقة البسيطة)
+docker run -d -p 3000:3000 --name dhaki-app faisalanqoudi/dhaki:latest
+
+## تشغيل التطبيق مع تعيين متغيرات البيئة
+docker run -d -p 3000:3000 \
+  -e XAI_API_KEY=your_xai_api_key \
+  -e GROQ_API_KEY=your_groq_api_key \
+  --name dhaki-app faisalanqoudi/dhaki:latest
+
+## تشغيل التطبيق مع استخدام ملف بيئة
+docker run -d -p 3000:3000 \
+  --env-file .env.docker \
+  --name dhaki-app faisalanqoudi/dhaki:latest
+
+## تشغيل التطبيق مع مجلد مشترك للملفات الثابتة
+docker run -d -p 3000:3000 \
+  -v $(pwd)/public:/app/public \
+  --name dhaki-app faisalanqoudi/dhaki:latest
+
+## عرض سجلات التطبيق
+docker logs dhaki-app
+
+## متابعة سجلات التطبيق بشكل مستمر
+docker logs -f dhaki-app
+
+## الوصول إلى سطر الأوامر داخل حاوية التطبيق
+docker exec -it dhaki-app /bin/sh
+
+## عرض معلومات نظام التطبيق
+docker stats dhaki-app
+
+## باستخدام Docker Compose:
+
+## عرض سجلات جميع الحاويات
+docker-compose logs
+
+## عرض سجلات التطبيق فقط
+docker-compose logs dhaki-app
+
+## إيقاف جميع الحاويات
+docker-compose down
+
+## إيقاف وحذف الحاويات والصور
+docker-compose down --rmi all
+
+## معلومات إضافية:
+
+# عنوان الوصول للتطبيق
+http://localhost:3000
+# أو عنوان الخادم الخاص بك
+http://your-server-ip:3000 
